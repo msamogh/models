@@ -28,6 +28,7 @@ import os
 
 import tensorflow as tf
 from tensorflow.python.estimator import model_fn as model_fn_lib
+from tensorflow.python.estimator.export.export_output import PredictOutput
 
 from official.utils.arg_parsers import parsers  # pylint: disable=g-bad-import-order
 from official.utils.logging import hooks_helper
