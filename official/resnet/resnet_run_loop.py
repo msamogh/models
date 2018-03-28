@@ -356,8 +356,8 @@ def resnet_main(flags, model_function, input_function):
                               1, flags.num_parallel_calls, flags.multi_gpu)
 
     def serving_input_receiver_fn():
-        features = classifier._get_features_from_input_fn(
-            input_fn_eval)[0]
+        features, _ = classifier._get_features_from_input_fn(
+            input_fn_eval)
         return tf.estimator.export.ServingInputReceiver(
             features,
             features
