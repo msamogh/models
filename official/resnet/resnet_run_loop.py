@@ -220,8 +220,16 @@ def resnet_model_fn(features, labels, mode, model_class,
         'probabilities': tf.nn.softmax(logits, name='softmax_tensor')
     }
 
+    predictions_export = {
+        'classes': PredictOutput(predictions['classes'])
+    }
+
     if mode == tf.estimator.ModeKeys.PREDICT:
-        return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
+        return tf.estimator.EstimatorSpec(
+            mode=mode,
+            predictions=predictions,
+            export_outputs=predictions_export
+        )
 
     # Calculate loss, which includes softmax cross entropy and L2 regularization.
     cross_entropy = tf.losses.softmax_cross_entropy(
@@ -277,7 +285,8 @@ def resnet_model_fn(features, labels, mode, model_class,
         predictions=predictions,
         loss=loss,
         train_op=train_op,
-        eval_metric_ops=metrics)
+        eval_metric_ops=metrics
+    )
 
 
 def validate_batch_size_for_multi_gpu(batch_size):
