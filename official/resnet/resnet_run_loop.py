@@ -222,7 +222,7 @@ def resnet_model_fn(features, labels, mode, model_class,
     }
 
     predictions_export = {
-        'classes': PredictOutput(predictions['classes'])
+        'probabilities': PredictOutput(predictions['probabilities'])
     }
 
     if mode == tf.estimator.ModeKeys.PREDICT:
