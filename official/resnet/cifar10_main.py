@@ -179,7 +179,12 @@ class Cifar10Model(resnet_model.Model):
 
 def cifar10_model_fn(features, labels, mode, params):
     """Model function for CIFAR-10."""
-    features = tf.reshape(features, [-1, _HEIGHT, _WIDTH, _NUM_CHANNELS])
+    try:
+        features = features['feature']
+        features = tf.reshape(features, [-1, _HEIGHT, _WIDTH, _NUM_CHANNELS])
+    except:
+        print('unable to reshape', features.shape, 'to',
+              [-1, _HEIGHT, _WIDTH, _NUM_CHANNELS])
 
     learning_rate_fn = resnet_run_loop.learning_rate_with_decay(
         batch_size=params['batch_size'], batch_denom=128,
