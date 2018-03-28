@@ -341,9 +341,13 @@ def resnet_main(flags, model_function, input_function):
             'version': flags.version,
         })
 
+    def input_fn_eval():
+            return input_function(False, flags.data_dir, flags.batch_size,
+                                  1, flags.num_parallel_calls, flags.multi_gpu)
+
     def serving_input_receiver_fn():
-        features = tf.placeholder(shape=[32, 32, 3], dtype=tf.float32)
-        # features, input_hooks = classifier._get_features_from_input_fn(input_fn_eval, model_fn_lib.ModeKeys.PREDICT)
+        # features = {'input': tf.placeholder(shape=[32, 32, 3], dtype=tf.float32)}
+        features, input_hooks = classifier._get_features_from_input_fn(input_fn_eval, model_fn_lib.ModeKeys.PREDICT)
         print('================================')
         print(features)
         print('================================')
@@ -358,7 +362,7 @@ def resnet_main(flags, model_function, input_function):
         export_dir_base="resnet_clf_tf_estimator",
         serving_input_receiver_fn=serving_input_receiver_fn)
 
-    
+
     for _ in range(flags.train_epochs // flags.epochs_per_eval):
         train_hooks = hooks_helper.get_train_hooks(
             flags.hooks, batch_size=flags.batch_size)
