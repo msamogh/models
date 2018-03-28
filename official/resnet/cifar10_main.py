@@ -180,7 +180,7 @@ class Cifar10Model(resnet_model.Model):
 def cifar10_model_fn(features, labels, mode, params):
     """Model function for CIFAR-10."""
     try:
-        features = features['feature']
+        
         features = tf.reshape(features, [-1, _HEIGHT, _WIDTH, _NUM_CHANNELS])
     except:
         print('unable to reshape', features.shape, 'to',
