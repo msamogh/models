@@ -69,7 +69,7 @@ def process_record_dataset(dataset, is_training, batch_size, shuffle_buffer,
     """
     # We prefetch a batch at a time, This can help smooth out the time taken to
     # load input files as we go through shuffling and processing.
-    dataset = dataset.prefetch(buffer_size=batch_size)
+    # dataset = dataset.prefetch(buffer_size=batch_size)
     if is_training:
         # Shuffle the records. Note that we shuffle before repeating to ensure
         # that the shuffling respects epoch boundaries.
@@ -101,7 +101,7 @@ def process_record_dataset(dataset, is_training, batch_size, shuffle_buffer,
     # will happen synchronously during run time. We prefetch here again to
     # background all of the above processing work and keep it out of the
     # critical training path.
-    dataset = dataset.prefetch(1)
+    # dataset = dataset.prefetch(1)
 
     return dataset
 
@@ -127,7 +127,7 @@ def get_synth_input_fn(height, width, num_channels, num_classes):
         images = tf.zeros(
             (batch_size, height, width, num_channels), tf.float32)
         labels = tf.zeros((batch_size, num_classes), tf.int32)
-        return tf.data.Dataset.from_tensors((images, labels)).repeat()
+        return tf.contrib.data.Dataset.from_tensors((images, labels)).repeat()
 
     return input_fn
 
@@ -356,17 +356,16 @@ def resnet_main(flags, model_function, input_function):
                               1, flags.num_parallel_calls, flags.multi_gpu)
 
     def serving_input_receiver_fn():
-        features, _ = classifier._get_features_from_input_fn(
-            input_fn_eval)
+        features, _ = classifier._get_features_from_input_fn(input_fn_eval, model_fn_lib.ModeKeys.PREDICT)
         return tf.estimator.export.ServingInputReceiver(
             features,
             features
         )        
 
-    # Save classifier
-    export_dir = classifier.export_savedmodel(
-        export_dir_base="resnet_clf_tf_estimator",
-        serving_input_receiver_fn=serving_input_receiver_fn)
+    # # Save classifier
+    # export_dir = classifier.export_savedmodel(
+    #     export_dir_base="resnet_clf_tf_estimator",
+    #     serving_input_receiver_fn=serving_input_receiver_fn)
 
     for _ in range(flags.train_epochs // flags.epochs_per_eval):
         train_hooks = hooks_helper.get_train_hooks(
