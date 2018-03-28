@@ -15,34 +15,25 @@ from memory_profiler import profile
 
 import random
 
-@profile
-def load():
-    
-    predict_fn = predictor.from_saved_model(
-        'resnet_clf_tf_estimator/1522216528/',
-        signature_def_key='probabilities'
-    )
+predict_fn = predictor.from_saved_model(
+    'resnet_clf_tf_estimator/1522231372/',
+    signature_def_key='probabilities'
+)
 
-    from official.resnet.cifar10_main import input_fn
-    dataset = input_fn(
-        False,
-        data_dir='/tmp/cifar10_data',
-        batch_size=128
-    )
-    with tf.Session() as sess:
-        iterator = dataset.make_one_shot_iterator()
-        next_element = iterator.get_next()[0]
-        next_element = sess.run(next_element)
+from official.resnet.cifar10_main import input_fn
+dataset = input_fn(
+    False,
+    data_dir='/tmp/cifar10_data',
+    batch_size=128
+)
+with tf.Session() as sess:
+    iterator = dataset.make_one_shot_iterator()
+    next_element = iterator.get_next()[0]
+    next_element = sess.run(next_element)
 
-        predictions = predict_fn({
-            'input': next_element
-        })
-        print(predictions['output'][0])
-        print(len(predictions['output'][0]))
+    predictions = predict_fn({
+        'input': next_element
+    })
+    print(predictions['output'][0])
+    print(len(predictions['output'][0]))
 
-def load1():
-    x = 3
-    del x
-
-if __name__ == '__main__':
-    load()
