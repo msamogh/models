@@ -340,6 +340,18 @@ def resnet_main(flags, model_function, input_function):
           'version': flags.version,
       })
 
+  def serving_input_receiver_fn():
+      features = tf.placeholder(shape=[32, 32, 3], dtype=tf.float32)
+      # features, input_hooks = classifier._get_features_from_input_fn(input_fn_eval, model_fn_lib.ModeKeys.PREDICT)
+      print('================================')
+      print(features)
+      print('================================')
+      serving_input_receiver = tf.estimator.export.ServingInputReceiver(
+          features,
+          features
+      )
+      return serving_input_receiver
+      
   for _ in range(flags.train_epochs // flags.epochs_per_eval):
     train_hooks = hooks_helper.get_train_hooks(flags.hooks, batch_size=flags.batch_size)
 
