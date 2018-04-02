@@ -13,9 +13,9 @@ from tensorflow.contrib import predictor
 from memory_profiler import profile
 
 
-def get_predictions(model_timestamp):
+def get_predictions(saved_model_path):
     predict_fn = predictor.from_saved_model(
-        'resnet_clf_tf_estimator/' + model_timestamp + '/',
+        saved_model_path,
         signature_def_key='probabilities'
     )
 
