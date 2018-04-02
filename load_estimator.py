@@ -6,16 +6,14 @@ import os
 import urllib
 
 import numpy as np
+
 import tensorflow as tf
-
-
 from tensorflow.contrib import predictor
 
 from memory_profiler import profile
 
-import random
 
-def print_prediction(model_timestamp):
+def get_predictions(model_timestamp):
     predict_fn = predictor.from_saved_model(
         'resnet_clf_tf_estimator/' + model_timestamp + '/',
         signature_def_key='probabilities'
@@ -27,13 +25,10 @@ def print_prediction(model_timestamp):
         data_dir='/tmp/cifar10_data',
         batch_size=128
     )[0]
-    with tf.Session() as sess:
-        # iterator = dataset.make_one_shot_iterator()
-        # next_element = iterator.get_next()[0]
-        # next_element = sess.run(next_element)
 
+    with tf.Session() as sess:
+        next_element = sess.run(next_element)
         predictions = predict_fn({
             'input': next_element
         })
-        print(predictions['output'][0])
-        print(len(predictions['output'][0]))
+        return predictions['output'][0]
