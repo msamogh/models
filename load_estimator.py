@@ -36,4 +36,5 @@ def get_predictions(saved_model_path):
         })
         return predictions['output'][0]
 
-get_predictions('resnet_clf_tf_estimator/1522660104')
+if __name__ == '__main__':
+    get_predictions('resnet_clf_tf_estimator/1522660104')
