@@ -103,7 +103,7 @@ def process_record_dataset(dataset, is_training, batch_size, shuffle_buffer,
     # critical training path.
     # dataset = dataset.prefetch(1)
 
-    return {'feature': dataset.make_one_shot_iterator().get_next()[0]}
+    return dataset.make_one_shot_iterator().get_next()
 
 
 def get_synth_input_fn(height, width, num_channels, num_classes):

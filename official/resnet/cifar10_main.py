@@ -181,8 +181,6 @@ def cifar10_model_fn(features, labels, mode, params):
     """Model function for CIFAR-10."""
     try:
         features = features['feature']
-        print(dir(features))
-        print(help(features))
         features = tf.reshape(features, [-1, _HEIGHT, _WIDTH, _NUM_CHANNELS])
     except:
         print('unable to reshape', features.shape, 'to',

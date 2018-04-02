@@ -25,7 +25,7 @@ next_element = input_fn(
     False,
     data_dir='/tmp/cifar10_data',
     batch_size=128
-)['feature']
+)[0]
 with tf.Session() as sess:
     # iterator = dataset.make_one_shot_iterator()
     # next_element = iterator.get_next()[0]
