@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import os
 import urllib
+import json
 
 import numpy as np
 
@@ -28,7 +29,11 @@ def get_predictions(saved_model_path):
 
     with tf.Session() as sess:
         next_element = sess.run(next_element)
+        payload = {'input': str(next_element.tolist())}
+        json.dump(payload, open('example.json', 'w'))
         predictions = predict_fn({
             'input': next_element
         })
         return predictions['output'][0]
+
+get_predictions('resnet_clf_tf_estimator/1522660104')
