@@ -362,10 +362,11 @@ def resnet_main(flags, model_function, input_function):
             features
         )        
 
-    # # Save classifier
-    # export_dir = classifier.export_savedmodel(
-    #     export_dir_base="resnet_clf_tf_estimator",
-    #     serving_input_receiver_fn=serving_input_receiver_fn)
+    print('saving')
+    # Save classifier
+    export_dir = classifier.export_savedmodel(
+        export_dir_base="resnet_clf_tf_estimator",
+        serving_input_receiver_fn=serving_input_receiver_fn)
 
     for _ in range(flags.train_epochs // flags.epochs_per_eval):
         train_hooks = hooks_helper.get_train_hooks(

@@ -220,9 +220,9 @@ def main(argv):
     parser.set_defaults(data_dir='/tmp/cifar10_data',
                         model_dir='/tmp/cifar10_model',
                         resnet_size=32,
-                        train_epochs=250,
+                        train_epochs=2,
                         epochs_per_eval=10,
-                        batch_size=128)
+                        batch_size=256)
 
     flags = parser.parse_args(args=argv[1:])
 

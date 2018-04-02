@@ -29,7 +29,7 @@ next_element = input_fn(
 with tf.Session() as sess:
     # iterator = dataset.make_one_shot_iterator()
     # next_element = iterator.get_next()[0]
-    next_element = sess.run(next_element)
+    # next_element = sess.run(next_element)
 
     predictions = predict_fn({
         'input': next_element
