@@ -93,7 +93,7 @@ def process_record_dataset(dataset, is_training, batch_size, shuffle_buffer,
 
     # Parse the raw records into images and labels
     dataset = dataset.map(lambda value: parse_record_fn(value, is_training),
-                          num_parallel_calls=num_parallel_calls)
+                        num_threads=num_parallel_calls)
 
     dataset = dataset.batch(batch_size)
 
@@ -103,7 +103,7 @@ def process_record_dataset(dataset, is_training, batch_size, shuffle_buffer,
     # critical training path.
     # dataset = dataset.prefetch(1)
 
-    return dataset
+    return {'feature': dataset.make_one_shot_iterator().get_next()[0]}
 
 
 def get_synth_input_fn(height, width, num_channels, num_classes):

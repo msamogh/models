@@ -173,7 +173,7 @@ def input_fn(is_training, data_dir, batch_size, num_epochs=1,
     A dataset that can be used for iteration.
   """
   filenames = get_filenames(is_training, data_dir)
-  dataset = tf.data.Dataset.from_tensor_slices(filenames)
+  dataset = tf.contrib.data.Dataset.from_tensor_slices(filenames)
 
   if is_training:
     # Shuffle the input files
@@ -182,7 +182,7 @@ def input_fn(is_training, data_dir, batch_size, num_epochs=1,
   num_images = is_training and _NUM_IMAGES['train'] or _NUM_IMAGES['validation']
 
   # Convert to individual records
-  dataset = dataset.flat_map(tf.data.TFRecordDataset)
+  dataset = dataset.flat_map(tf.contrib.data.TFRecordDataset)
 
   return resnet_run_loop.process_record_dataset(
       dataset, is_training, batch_size, _SHUFFLE_BUFFER, parse_record,

@@ -123,7 +123,7 @@ def input_fn(is_training, data_dir, batch_size, num_epochs=1,
       A dataset that can be used for iteration.
     """
     filenames = get_filenames(is_training, data_dir)
-    dataset = tf.data.FixedLengthRecordDataset(filenames, _RECORD_BYTES)
+    dataset = tf.contrib.data.FixedLengthRecordDataset(filenames, _RECORD_BYTES)
 
     num_images = is_training and _NUM_IMAGES['train'] or _NUM_IMAGES['validation']
 
@@ -181,6 +181,8 @@ def cifar10_model_fn(features, labels, mode, params):
     """Model function for CIFAR-10."""
     try:
         features = features['feature']
+        print(dir(features))
+        print(help(features))
         features = tf.reshape(features, [-1, _HEIGHT, _WIDTH, _NUM_CHANNELS])
     except:
         print('unable to reshape', features.shape, 'to',

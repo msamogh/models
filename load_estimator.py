@@ -21,14 +21,14 @@ predict_fn = predictor.from_saved_model(
 )
 
 from official.resnet.cifar10_main import input_fn
-dataset = input_fn(
+next_element = input_fn(
     False,
     data_dir='/tmp/cifar10_data',
     batch_size=128
-)
+)['feature']
 with tf.Session() as sess:
-    iterator = dataset.make_one_shot_iterator()
-    next_element = iterator.get_next()[0]
+    # iterator = dataset.make_one_shot_iterator()
+    # next_element = iterator.get_next()[0]
     next_element = sess.run(next_element)
 
     predictions = predict_fn({
