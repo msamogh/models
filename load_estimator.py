@@ -11,8 +11,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.contrib import predictor
 
-from memory_profiler import profile
-
 
 def get_predictions(saved_model_path):
     predict_fn = predictor.from_saved_model(
@@ -30,7 +28,7 @@ def get_predictions(saved_model_path):
     with tf.Session() as sess:
         next_element = sess.run(next_element)
         payload = {'input': str(next_element.tolist())}
-        json.dump(payload, open('example.json', 'w'))
+        json.dump(payload[0], open('example.json', 'w'))
         predictions = predict_fn({
             'input': next_element
         })
